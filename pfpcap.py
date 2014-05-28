@@ -95,7 +95,6 @@ class PeakflowBrowser:
     def is_flowcapture_finished(self, mitigation_id, tms_ip):
         """ Check if flow capture is done
         """
-        print "Calling is_flowcapture_finished %s" % tms_ip
         parameters = self.post_params.copy()
         parameters.update({
             'tms_ip': tms_ip,
@@ -105,7 +104,6 @@ class PeakflowBrowser:
         data = urllib.urlencode(parameters)
         resp = self.br.open(self.base_url + '/wizards/flowtap?id=flowtap', data)
         body = str(resp.read())
-        print "STATUS BODY:", body
         if re.search('Access Denied', body):
             # To start a flow capture the server checks that certain server side
             # session variables are set that define our privileges. Those
@@ -127,7 +125,6 @@ class PeakflowBrowser:
     def download_pcap(self, mitigation_id, tms_ip, filename):
         """ Download a finished flowcapture file
         """
-        print "Calling download_pcap %s" % tms_ip
         parameters = self.post_params.copy()
         parameters.update({
             'tms_ip': tms_ip,
@@ -164,18 +161,15 @@ if __name__ == '__main__':
         print "Starting flow capture... ",
         if pb.start_flowcapture(options.start, options.tms_ip):
             print "done"
+        else:
+            print "FAIL (for some reason...)"
 
     if options.status:
         print "Checking status of flow capture for mitigation id: %s" % options.status
-        while True:
-            resp = pb.is_flowcapture_finished(options.status, options.tms_ip)
-            print "BODY:", resp.read()
-            if len(resp.read()) > 0:
-                print "CODE:", resp.code
-                print "HEADERS:", resp.info()
-                print "BODY:", resp.read()
-                break
-
+        if pb.is_flowcapture_finished(options.status, options.tms_ip):
+            print "Flow capture is done!"
+        else:
+            print "Flow capture is still running..."
 
     if options.download:
         if pb.start_flowcapture(options.download, options.tms_ip):
