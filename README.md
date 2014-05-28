@@ -20,10 +20,10 @@ not actually provide any real-life value.. don't complain, commit!
 
 Fun stuff
 ---------
-The reasponse sent by Peakflow for a PCAP download requests contains the
+The response sent by Peakflow for a PCAP download requests contains the
 following headers;
 
-Pragma:PHP-Thinks-Its-So-Smart
-Cache-Control:But-It's-REALLY-DUMB
+    Pragma:PHP-Thinks-Its-So-Smart
+    Cache-Control:But-It's-REALLY-DUMB
 
 
