@@ -47,6 +47,11 @@ class PeakflowBrowser:
         self.br.submit()
 
 
+    def logout(self):
+        """ Logout of the Web UI
+        """
+        self.br.open(self.base_url + '/?logout=true')
+
 
     def _get_mitigation(self, mitigation_id):
         """ Get the mitigation details page
@@ -155,6 +160,7 @@ if __name__ == '__main__':
 
     if not options.tms_ip:
         print >> sys.stderr, "You have to provide the management IP address of the TMS you wish to capture on"
+        pb.logout()
         sys.exit(1)
 
     if options.start:
@@ -176,10 +182,11 @@ if __name__ == '__main__':
             print "Flow capture successfully started"
         else:
             print "Unable to start flow capture"
+            pb.logout()
             sys.exit(1)
         while not pb.is_flowcapture_finished(options.download, options.tms_ip):
             print "Flow capture not done...."
         print "Flow capture complete, downloading pcap..."
         pb.download_pcap(options.download, options.tms_ip, 'damp.pcap')
 
-
+    pb.logout()
