@@ -1,8 +1,10 @@
 #!/usr/bin/python
 
 import re
-import mechanize
+import sys
 import urllib
+
+import mechanize
 
 class PeakflowBrowser:
 
